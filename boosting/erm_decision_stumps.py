@@ -100,7 +100,7 @@ def best_ray_for_feature(j, X, Y, D=[]):
     # The case when theta is greater than all x_i
     if val < objective_val or (1 - val) < objective_val:
         objective_val = min(val, 1 - val)
-        objective_theta = theta_l
+        objective_theta = theta_u
         objective_index = j
         objective_b = 1 if val < 1 - val else -1
 
