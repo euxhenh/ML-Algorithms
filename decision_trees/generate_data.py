@@ -4,12 +4,6 @@ import random
 def conjunction(x):
     a = [-1, 1]
     return a[random.randint(0, 1)]
-    d = len(x)
-    for feature in range(0, d, 3):
-        if x[feature] == 0:
-            return -1
-    else:
-        return 1
 
 def generate_data(n, d, f):
     """
