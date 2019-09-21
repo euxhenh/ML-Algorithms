@@ -1,5 +1,4 @@
 % Euxhen Hasanaj
-% 10715, Fall 2019
 % Soft-SVM Dual implementation with Laplace kernel
 %
 %We are minimizing over alph the following

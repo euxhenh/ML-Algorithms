@@ -2,6 +2,8 @@ import random
 
 # Built in functions
 def conjunction(x):
+    a = [-1, 1]
+    return a[random.randint(0, 1)]
     d = len(x)
     for feature in range(0, d, 3):
         if x[feature] == 0:
@@ -28,7 +30,7 @@ def generate_data(n, d, f):
 
 def print_data_to_file(name):
     fl = open(name, "w")
-    calX, calY = generate_data(100, 6, conjunction)
+    calX, calY = generate_data(1000, 50, conjunction)
     for i, x in enumerate(calX):
         for feature in x:
             fl.write(str(feature) + " ")

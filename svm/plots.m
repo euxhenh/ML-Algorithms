@@ -1,5 +1,4 @@
 % Euxhen Hasanaj
-% 10715, Fall 2019
 % Helper function for plotting
 
 function t = plots()
