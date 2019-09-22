@@ -37,7 +37,7 @@ def erm_ds(X, Y, D=[]):
 
     d = len(X[0])       # Number of features per data point
     for j in range(d):  # Consider the j-th feature
-        val, index, theta, b = best_ray_for_feature(j, X, Y, D)
+        val, theta, b = best_ray_for_feature(j, X, Y, D)
         if val < objective_val:
             objective_val = val
             objective_theta = theta
@@ -60,7 +60,6 @@ def best_ray_for_feature(j, X, Y, D=[]):
 
     objective_val = float('inf')
     objective_theta = 0
-    objective_index = -1
     objective_b = 1
 
     d = len(X[0])       # Number of features per data point
@@ -70,7 +69,7 @@ def best_ray_for_feature(j, X, Y, D=[]):
         D = [1/m] * m   # Uniform distribution over the sample
 
     # Sort according to the j-th feature
-    X, Y = zip(*sorted(zip(X, Y), key = lambda row: row[0][j]))
+    X, Y, D = zip(*sorted(zip(X, Y, D), key = lambda row: row[0][j]))
 
     # Boundaries
     theta_l = X[0][j] - 1/2
@@ -83,7 +82,6 @@ def best_ray_for_feature(j, X, Y, D=[]):
     if val < objective_val or (1 - val) < objective_val:
         objective_val = min(val, 1 - val)
         objective_theta = theta_l
-        objective_index = j
         objective_b = 1 if val < 1 - val else -1
 
     # The case when theta is within the range of x_i
@@ -93,7 +91,6 @@ def best_ray_for_feature(j, X, Y, D=[]):
             if X[i][j] < X[i+1][j]:  # Only update if value of x changed
                 objective_val = min(val, 1 - val)
                 objective_theta = 1/2 * (X[i][j] + X[i+1][j])
-                objective_index = j
                 objective_b = 1 if val < 1 - val else -1
 
     val -= Y[m - 1] * D[m - 1]
@@ -101,10 +98,9 @@ def best_ray_for_feature(j, X, Y, D=[]):
     if val < objective_val or (1 - val) < objective_val:
         objective_val = min(val, 1 - val)
         objective_theta = theta_u
-        objective_index = j
         objective_b = 1 if val < 1 - val else -1
 
-    return objective_val, objective_index, objective_theta, objective_b
+    return objective_val, objective_theta, objective_b
 
 def read_data(name="data"):
     fl = open(name, "r")
