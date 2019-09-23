@@ -2,8 +2,7 @@ import random
 
 # Built in functions
 def conjunction(x):
-    a = [-1, 1]
-    return a[random.randint(0, 1)]
+    return x[-1]
 
 def generate_data(n, d, f):
     """
@@ -13,18 +12,20 @@ def generate_data(n, d, f):
     """
     calX = []
     calY = []
+    a = [-1, 1]
 
     for i in range(n):
         x = []
         for feature in range(d):
-            x.append(random.randint(0, 1))
+            x.append(random.uniform(0, 1))
         calX.append(x)
-        calY.append(f(x)) 
+        #calY.append(x[-1]) 
+        calY.append(a[random.randint(0, 1)]) 
     return calX, calY
 
 def print_data_to_file(name):
     fl = open(name, "w")
-    calX, calY = generate_data(1000, 50, conjunction)
+    calX, calY = generate_data(1000, 100, conjunction)
     for i, x in enumerate(calX):
         for feature in x:
             fl.write(str(feature) + " ")

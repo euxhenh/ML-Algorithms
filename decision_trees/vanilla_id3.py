@@ -1,5 +1,5 @@
 import sys
-from gains import train_error_gain, information_gain, gini_index_gain
+from gain_functions import train_error_gain, information_gain, gini_index_gain
 
 DEPTH = 8
 
@@ -30,7 +30,7 @@ def id3(X, Y, A, depth):
     j = -1
     G = -float("inf")
     for i in A:
-        g = train_error_gain(X, Y, i)
+        g = gini_index_gain(X, Y, i)
         if G < g:
             G, j = g, i
 

@@ -18,10 +18,10 @@ def erm_ds(X, Y, D=[]):
     Returns objective values for j, theta, b which minimize
         val = \sum_{i, y_i=1}{ D_i * I(x_{i,j} > theta) } +
                         \sum_{i, y_i=-1}{ D_i * I(x_{i,j} <= theta) }
-        or 1 - val.
+    or minimize (1 - val).
 
-    If (val) is minimized, then return b=1, otherwise,
-                                    if (1-val) is minimized return b=-1
+    If (val) is minimized, then return b = 1, otherwise,
+                                    if (1 - val) is minimized return b = -1
     """
     assert(len(X) > 0)
     assert(len(X) == len(Y))
