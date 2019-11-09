@@ -135,8 +135,6 @@ def modifiedid3(X, Y, A, k, gain_measure, max_depth=None):
     return root
 
 ##############################################################################
-# The following are just functions related to the questions
-##############################################################################
 
 def getacc(tree, X, Y):
     # Get accuracy
@@ -146,7 +144,6 @@ def getacc(tree, X, Y):
     accuracy = 1 - errors/len(X)
     return accuracy
 
-# Question 1.1.3
 def differentgains(Xtrain, Ytrain, Xtest, Ytest):
     # Compare different gain measures
     A = list(range(len(Xtrain[0])))
@@ -167,7 +164,6 @@ def differentgains(Xtrain, Ytrain, Xtest, Ytest):
     print('Training accuracy for k =', k, 'is', getacc(tree, Xtrain, Ytrain))
     print('Test accuracy for k =', k, 'is', getacc(tree, Xtest, Ytest))
 
-# Question 1.1.4
 def differentk(Xtrain, Ytrain, Xtest, Ytest):
     # Perform many experiments with different k
     A = list(range(len(Xtrain[0])))
@@ -199,7 +195,6 @@ def depth(tree):
             M = max(M, m)
     return M
 
-# Question 1.2.1
 def treesize(Xtrain, Ytrain):
     # Find number of nodes being used
     k = 9
@@ -217,7 +212,6 @@ def treesize(Xtrain, Ytrain):
     print("Number of nodes is", nodes)
     print("Depth of tree is", depth(tree) + 1)
 
-# Question 1.2.2
 def differentdepth(Xtrain, Ytrain, Xtest, Ytest):
     k = 9
     A = list(range(len(Xtrain[0])))
