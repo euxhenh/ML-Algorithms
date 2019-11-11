@@ -1,1 +1,1 @@
-<h3>Learning from Data playground</h3>
+<h3>Machine Learning playground</h3>
