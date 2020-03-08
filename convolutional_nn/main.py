@@ -7,12 +7,14 @@ from maxpool import MaxPool
 from linear import LinearLayer
 from cross_entropy_loss import SoftMaxCrossEntropyLoss
 
+
 class ConvNet:
     """
     Class to implement forward and backward pass of the following network -
     Conv -> Relu -> MaxPool -> Linear -> Softmax
     For the above network run forward, backward and update
     """
+
     def __init__(self):
         """
         Initialize Conv, ReLU, MaxPool, LinearLayer, SoftMaxCrossEntropy objects
@@ -74,8 +76,10 @@ class ConvNet:
         self.linear1.update(learning_rate, momentum_coeff)
         self.conv1.update(learning_rate, momentum_coeff)
 
+
 def labels2onehot(labels):
-    return np.array([[i==lab for i in range(20)]for lab in labels])
+    return np.array([[i == lab for i in range(20)]for lab in labels])
+
 
 if __name__ == '__main__':
     """
@@ -111,7 +115,8 @@ if __name__ == '__main__':
             for i in bar:
                 conv.zerograd()
                 y = ytrain[indices[i: i + batch_size]]
-                l, preds = conv.forward(xtrain[indices[i: i + batch_size], :], y)
+                l, preds = conv.forward(
+                    xtrain[indices[i: i + batch_size], :], y)
                 conv.backward()
                 conv.update(learning_rate=lr, momentum_coeff=mom)
 
@@ -119,8 +124,9 @@ if __name__ == '__main__':
             train_acc = 0
             bb = 2000
             for i in tqdm.tqdm(range(0, xtrain.shape[0], bb), desc='evaling'):
-                tl, preds=conv.forward(xtrain[i:i+bb], ytrain[i:i+bb])
-                train_acc+=np.sum(np.argmax(ytrain[i:i+bb, :], axis=-1)==preds)
+                tl, preds = conv.forward(xtrain[i:i+bb], ytrain[i:i+bb])
+                train_acc += np.sum(np.argmax(ytrain[i:i +
+                                                     bb, :], axis=-1) == preds)
                 train_loss += tl
             train_acc /= xtrain.shape[0]
             train_loss /= xtrain.shape[0]
@@ -129,4 +135,5 @@ if __name__ == '__main__':
             test_loss /= xtest.shape[0]
             test_acc = np.mean(np.argmax(ytest, axis=-1) == test_preds)
 
-            tqdm.tqdm.write("Epoch {0} :: Train Loss {1:.2f} :: Train Acc {2:.2f} :: Test Loss {3:.2f} :: Test Acc {4:.2f}".format(epoch+1, train_loss, train_acc, test_loss, test_acc))
+            tqdm.tqdm.write("Epoch {0} :: Train Loss {1:.2f} :: Train Acc {2:.2f} :: Test Loss {3:.2f} :: Test Acc {4:.2f}".format(
+                epoch+1, train_loss, train_acc, test_loss, test_acc))

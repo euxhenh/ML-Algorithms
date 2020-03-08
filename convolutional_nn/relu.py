@@ -1,9 +1,11 @@
 import numpy as np
 
+
 class ReLU:
     """
     ReLU non-linearity
     """
+
     def __init__(self):
         pass
 

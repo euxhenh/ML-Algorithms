@@ -9,6 +9,7 @@ Finds the feature j and threshold theta which best model the sample data.
 In other words, finds the best half-ray for the best feature.
 """
 
+
 def erm_ds(X, Y, D=[]):
     """
     X - training data
@@ -46,12 +47,13 @@ def erm_ds(X, Y, D=[]):
 
     return objective_index, objective_theta, objective_b
 
+
 def best_ray_for_feature(j, X, Y, D=[]):
     """
     Sort the x_i based on given feature j and set theta_i to be halfway
     between x_i and x_{i+1}. Calculate loss for each such theta_i and
     notice that after each step, the loss changes only by a single x_i.
-    This can reduce the performing time of the algorithm to m*log(m) 
+    This can reduce the performing time of the algorithm to m*log(m)
     required for sorting only.
     """
     assert(len(X) > 0)
@@ -69,7 +71,7 @@ def best_ray_for_feature(j, X, Y, D=[]):
         D = [1/m] * m   # Uniform distribution over the sample
 
     # Sort according to the j-th feature
-    X, Y, D = zip(*sorted(zip(X, Y, D), key = lambda row: row[0][j]))
+    X, Y, D = zip(*sorted(zip(X, Y, D), key=lambda row: row[0][j]))
 
     # Boundaries
     theta_l = X[0][j] - 1/2
@@ -102,6 +104,7 @@ def best_ray_for_feature(j, X, Y, D=[]):
 
     return objective_val, objective_theta, objective_b
 
+
 def read_data(name="data"):
     fl = open(name, "r")
     lines = fl.readlines()
@@ -117,6 +120,7 @@ def read_data(name="data"):
         Y.append(y)
     fl.close()
     return X, Y
+
 
 if __name__ == '__main__':
     X, Y = read_data()

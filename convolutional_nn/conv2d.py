@@ -6,17 +6,19 @@ from utils import (
     one_bias_init
 )
 
+
 class Conv:
     """
     Arguments -
     1. input_shape => (channels, height, width)
     2. filter_shape => (num of filters, filter height, filter width)
     """
+
     def __init__(self, input_shape, filter_shape):
         self.C, self.H, self.W = input_shape
         self.k_num, self.k_height, self.k_width = filter_shape
         self.w = random_weight_init_conv(self.k_num, self.C,
-                                        self.k_height, self.k_width)
+                                         self.k_height, self.k_width)
         self.b = one_bias_init(self.k_num)
         self.grad_w = np.zeros(self.w.shape)
         self.grad_b = np.zeros(self.b.shape)
@@ -36,7 +38,7 @@ class Conv:
         self.ishape = inputs.shape
         batch_size, C, H, W = inputs.shape
         self.xcol = im2col(inputs, k_height=self.k_height, k_width=self.k_width,
-                              padding=pad, stride=stride)
+                           padding=pad, stride=stride)
         self.Hs = 1 + (H + 2 * pad - self.k_height) // stride
         self.Ws = 1 + (W + 2 * pad - self.k_width) // stride
 
@@ -52,10 +54,10 @@ class Conv:
         self.grad_b = np.sum(dloss, axis=(0, 2, 3)).reshape(self.b.shape)
         dlossw = self.w.reshape(self.k_num, -1).T @ a
         grad_x = im2col_bw(dlossw[:, :], self.ishape,
-                                    k_height=self.k_height,
-                                    k_width=self.k_width,
-                                    padding=self.padding,
-                                    stride=self.stride)
+                           k_height=self.k_height,
+                           k_width=self.k_width,
+                           padding=self.padding,
+                           stride=self.stride)
         return self.grad_w, self.grad_b, grad_x
 
     def zerograd(self):
@@ -69,9 +71,9 @@ class Conv:
           2. momentum_coeff
         """
         self.grad_w_momentum = momentum_coeff * self.grad_w_momentum\
-                                + self.grad_w  / self.ishape[0]
+            + self.grad_w / self.ishape[0]
         self.grad_b_momentum = momentum_coeff * self.grad_b_momentum\
-                                + self.grad_b  / self.ishape[0]
+            + self.grad_b / self.ishape[0]
         self.w = self.w - learning_rate * self.grad_w_momentum
         self.b = self.b - learning_rate * self.grad_b_momentum
 

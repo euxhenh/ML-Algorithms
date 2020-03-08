@@ -2,11 +2,14 @@ import random
 import numpy as np
 from matplotlib import pyplot as plt
 
+
 def sgn(x):
     return 1 if x > 0 else -1
 
+
 def func(x):
     return 1 - 2 * x
+
 
 def generate_2d_points(f, num=10, minb=-10, maxb=10):
     """
@@ -34,9 +37,11 @@ def generate_2d_points(f, num=10, minb=-10, maxb=10):
 
     return np.asarray(points)
 
+
 def plot_points(ax, x, y):
     ax.scatter(x, y)
     return ax
+
 
 def plot_func(ax, f, minb, maxb):
     """
@@ -50,6 +55,7 @@ def plot_func(ax, f, minb, maxb):
     ax.plot(x, f(x))
     return ax
 
+
 def plot_func_param(ax, coeffs, minb, maxb):
     """
         Plots a function in canonical form, with coeffs an array of coefficients
@@ -60,6 +66,7 @@ def plot_func_param(ax, coeffs, minb, maxb):
     y = (-coeffs[0] - coeffs[1]*x) / coeffs[2]
     ax.scatter(x, y)
     return ax
+
 
 def train():
     """
@@ -85,7 +92,7 @@ def train():
     while True:
         wrong = False
         for i, row in enumerate(points):
-            x, gt = row[:-1], row[-1] # input, ground truth
+            x, gt = row[:-1], row[-1]  # input, ground truth
             y = sgn(np.dot(w, x.transpose()))
 
             # If missclassified, update weights
@@ -100,6 +107,7 @@ def train():
     ax = plot_func_param(ax, w, -bound, bound)
     ax.axis('equal')
     plt.show()
+
 
 if __name__ == '__main__':
     train()

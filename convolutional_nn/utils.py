@@ -1,15 +1,19 @@
 import numpy as np
 
+
 def random_weight_init(input, output):
     b = np.sqrt(6) / np.sqrt(input + output)
     return np.random.uniform(-b, b, (input, output))
 
+
 def one_bias_init(outd):
     return np.ones((outd, 1))
+
 
 def random_weight_init_conv(k_num, C, k_height, k_width):
     b = np.sqrt(6 / ((k_num + C) * k_height * k_width))
     return np.random.uniform(-b, b, (k_num, C, k_height, k_width))
+
 
 def im2col(X, k_height, k_width, padding=1, stride=1):
     '''
@@ -22,7 +26,7 @@ def im2col(X, k_height, k_width, padding=1, stride=1):
     '''
     N, C, H, W = X.shape
     bigM = np.pad(X, ((0, 0), (0, 0), (padding, padding), (padding, padding)),
-                    mode='constant', constant_values=0)
+                  mode='constant', constant_values=0)
     cols = []
     Hs = H + 2*padding - k_height + 1
     Ws = W + 2*padding - k_width + 1
@@ -31,6 +35,7 @@ def im2col(X, k_height, k_width, padding=1, stride=1):
         for i in range(0, Ws, stride):
             cols.append(bigM[:, :, j:j+k_height, i:i+k_width].reshape(N, -1))
     return np.vstack(cols).T
+
 
 def im2col_bw(grad_X_col, X_shape, k_height, k_width, padding=1, stride=1):
     '''

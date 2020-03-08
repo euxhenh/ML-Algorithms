@@ -1,9 +1,11 @@
 import numpy as np
 
+
 class SoftMaxCrossEntropyLoss:
     """
     Softmax and cross entropy loss
     """
+
     def __init__(self):
         pass
 

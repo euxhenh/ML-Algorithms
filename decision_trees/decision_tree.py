@@ -4,12 +4,13 @@ import queue
 from matplotlib import pyplot as plt
 from math import log2
 
-age = ["10-19","20-29","30-39","40-49","50-59","60-69","70-79","80-89","90-99"]
-menopause = ["lt40","ge40","premeno"]
-tumor_size = ["0-4","5-9","10-14","15-19","20-24","25-29","30-34","35-39",
-                "40-44","45-49","50-54","55-59"]
-inv_nodes = ["0-2","3-5","6-8","9-11","12-14","15-17","18-20","21-23","24-26",
-                "27-29","30-32","33-35","36-39"]
+age = ["10-19", "20-29", "30-39", "40-49",
+       "50-59", "60-69", "70-79", "80-89", "90-99"]
+menopause = ["lt40", "ge40", "premeno"]
+tumor_size = ["0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39",
+              "40-44", "45-49", "50-54", "55-59"]
+inv_nodes = ["0-2", "3-5", "6-8", "9-11", "12-14", "15-17", "18-20", "21-23", "24-26",
+             "27-29", "30-32", "33-35", "36-39"]
 node_caps = ["no", "yes"]
 deg_malig = ["1", "2", "3"]
 breast = ["left", "right"]
@@ -17,11 +18,12 @@ breast_quad = ["left_up", "left_low", "right_up", "right_low", "central"]
 irradiat = ["no", "yes"]
 
 features = [age, menopause, tumor_size, inv_nodes, node_caps, deg_malig,
-                                        breast, breast_quad, irradiat]
+            breast, breast_quad, irradiat]
 
 labels = ["no-recurrence-events", "recurrence-events"]
 NO_REC = 0
 REC = 1
+
 
 def preprocess_data(filename):
     # Treat the data as ordinal
@@ -36,14 +38,18 @@ def preprocess_data(filename):
             Y.append(y)
     return X, Y
 
+
 def train_error(a):
     return min(a, 1 - a)
+
 
 def gini_index(a):
     return 2 * a * (1 - a)
 
+
 def information_gain(a):
-    return 0 if a<1e-10 or a>1-1e-10 else -a * log2(a) - (1 - a) * log2(1 - a)
+    return 0 if a < 1e-10 or a > 1-1e-10 else -a * log2(a) - (1 - a) * log2(1 - a)
+
 
 def gain(X, Y, i, gain_measure):
     m = len(X)
@@ -68,6 +74,7 @@ def gain(X, Y, i, gain_measure):
 
     return HY - HX
 
+
 class DecisionNode:
     # Decision tree node
     def __init__(self, feature):
@@ -89,6 +96,7 @@ class DecisionNode:
         # Find the right branch and continue from there
         return self.branches[x[self.feature]].infer(x)
 
+
 def kchoices(X, Y, A, k, gain_measure):
     """
     Returns the feature which maximizes gain. The feature is selected from
@@ -103,6 +111,7 @@ def kchoices(X, Y, A, k, gain_measure):
             maxGain, argmax = m, i
     return argmax
 
+
 def modifiedid3(X, Y, A, k, gain_measure, max_depth=None):
     """
     Works on multivariate features. First calculate a feature j that maximizes
@@ -113,7 +122,7 @@ def modifiedid3(X, Y, A, k, gain_measure, max_depth=None):
     m = len(Y)
     ypos = Y.count(REC)         # Count positively labeled points
     # Reached the end
-    if len(A) == 0 or ypos == m or ypos == 0 or max_depth == 0:       
+    if len(A) == 0 or ypos == m or ypos == 0 or max_depth == 0:
         return DecisionNode(REC if ypos >= m/2 else NO_REC)
 
     j = kchoices(X, Y, A, k, gain_measure)  # The feature that maximizes gain
@@ -130,11 +139,12 @@ def modifiedid3(X, Y, A, k, gain_measure, max_depth=None):
         else:                               # Branch out and recur
             Acopy = A.copy()
             Acopy.remove(j)
-            root.add_node(vi, modifiedid3(Xvi, Yvi, Acopy, k, gain_measure,\
-                    max_depth - 1 if max_depth is not None else None))
+            root.add_node(vi, modifiedid3(Xvi, Yvi, Acopy, k, gain_measure,
+                                          max_depth - 1 if max_depth is not None else None))
     return root
 
 ##############################################################################
+
 
 def getacc(tree, X, Y):
     # Get accuracy
@@ -143,6 +153,7 @@ def getacc(tree, X, Y):
         errors += (tree.infer(x) != y)
     accuracy = 1 - errors/len(X)
     return accuracy
+
 
 def differentgains(Xtrain, Ytrain, Xtest, Ytest):
     # Compare different gain measures
@@ -163,6 +174,7 @@ def differentgains(Xtrain, Ytrain, Xtest, Ytest):
     print("\nTrain error")
     print('Training accuracy for k =', k, 'is', getacc(tree, Xtrain, Ytrain))
     print('Test accuracy for k =', k, 'is', getacc(tree, Xtest, Ytest))
+
 
 def differentk(Xtrain, Ytrain, Xtest, Ytest):
     # Perform many experiments with different k
@@ -186,6 +198,7 @@ def differentk(Xtrain, Ytrain, Xtest, Ytest):
         print('Train accuracy for k =', k, 'is', getacc(tree, Xtrain, Ytrain))
         print()
 
+
 def depth(tree):
     # Find depth of tree
     M = -1
@@ -194,6 +207,7 @@ def depth(tree):
             m = depth(tree.branches[node]) + 1
             M = max(M, m)
     return M
+
 
 def treesize(Xtrain, Ytrain):
     # Find number of nodes being used
@@ -211,6 +225,7 @@ def treesize(Xtrain, Ytrain):
                 nodes += 1
     print("Number of nodes is", nodes)
     print("Depth of tree is", depth(tree) + 1)
+
 
 def differentdepth(Xtrain, Ytrain, Xtest, Ytest):
     k = 9
@@ -235,14 +250,16 @@ def differentdepth(Xtrain, Ytrain, Xtest, Ytest):
     plt.legend(loc='upper left')
     plt.show()
 
+
 def main():
     Xtrain, Ytrain = preprocess_data("./data/breast-cancer.data.train")
     Xtest, Ytest = preprocess_data("./data/breast-cancer.data.test")
-    
+
     #differentgains(Xtrain, Ytrain, Xtest, Ytest)
     #differentk(Xtrain, Ytrain, Xtest, Ytest)
     #treesize(Xtrain, Ytrain)
     #differentdepth(Xtrain, Ytrain, Xtest, Ytest)
+
 
 if __name__ == '__main__':
     main()
